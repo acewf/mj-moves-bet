@@ -1,6 +1,7 @@
-require(['app', 'jquery'], function (app) {
+define(['board'], function() {
     'use strict';
     
+    console.log('--------BOARD-----',app);
     //Board Contructor
     function Board(){
     	Object.defineProperties(this, {
@@ -71,6 +72,5 @@ require(['app', 'jquery'], function (app) {
     Board.prototype.removeView = function(first_argument) {
     	// body...
     };
-
-
+    return Board;
 });

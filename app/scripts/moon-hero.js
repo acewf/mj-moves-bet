@@ -3,7 +3,8 @@ Author: Pedro Martins
 email: pedro.martins@pixelkiller.net
 Date: 07/2015
 */
-define(['moonhero','keyboard'], function(moonhero,keyboard) { 
+define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
+    console.log(keyboard,'#--#',gameid,gamecanvas,menuView)
     //Application Contructor  
     function MoonHero(){
         Object.defineProperties(this, {
@@ -64,6 +65,8 @@ define(['moonhero','keyboard'], function(moonhero,keyboard) {
         this.id = this.createId();
         this.canvasContext = null;
 
+        this.keyboard = new keyboard();
+
         this.createListeners();
 
         console.log('MoonHero Contructor');
@@ -74,6 +77,8 @@ define(['moonhero','keyboard'], function(moonhero,keyboard) {
     	// body...
         console.log('Init MoonHero Application');
         console.log('ID:',this.id);
+
+        $(menuView).removeClass('hide');
         this.CanvasRender(null);
     };
 
@@ -85,8 +90,7 @@ define(['moonhero','keyboard'], function(moonhero,keyboard) {
     //Application Add Global Listeners
     MoonHero.prototype.createListeners = function() {
         var instance = this;
-        console.log('-->',keyboard);
-        keyboard.addEventListener('keydown',instance.keyboardEvent);
+        instance.keyboard.addEventListener('keydown',instance.keyboardEvent);
     	// body...
     };
 
@@ -109,13 +113,12 @@ define(['moonhero','keyboard'], function(moonhero,keyboard) {
         var browser=instance.bowserInfo().get_browser();
         var browser_version=instance.bowserInfo().get_browser_version();
         if (!((browser=='Firefox') ||  (browser=='MSIE') ||  (browser=='Safari'))) {
-           canvas = document.getElementById("gamecanvas");
             W = window.innerWidth, H = window.innerHeight;
-            instance.canvasContext  = canvas.getContext("2d");
+            instance.canvasContext  = gamecanvas.getContext("2d");
             console.log(instance.canvasContext );
             //Make the canvas occupy the full page
-            canvas.width = W;
-            canvas.height = H;
+            gamecanvas.width = W;
+            gamecanvas.height = H;
             /*
             intVeral = setInterval(function(){
                 instance.CanvasDraw(this);

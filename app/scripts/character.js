@@ -3,9 +3,9 @@ Author: Pedro Martins
 email: pedro.martins@pixelkiller.net
 Date: 07/2015
 */
-define(['game'], function() {
+define(['character'], function() {
     //Game Contructor
-    function Game(){
+    function Character(){
         Object.defineProperties(this, {
             // rewritable at the moment of load, it holds the default type chosen for fallback purposes in the future
             defaultType: {
@@ -35,30 +35,16 @@ define(['game'], function() {
         });
         this.id = this.createId();
     }
-    
-    Game.prototype.init = function(first_argument) {
-    	// body...
-        console.log('Init Game');
-        console.log('ID:',this.id)
-        this.loop();
+
+    Character.prototype.init = function(first_argument) {
+        console.log('Build Character id:',this.id);
     };
 
-    Game.prototype.destroy = function(first_argument) {
-    	// body...
+    Character.prototype.destroy = function(first_argument) {
+    	console.log('Destroy Character id:',this.id);
     };
 
-    Game.prototype.loop = function(){
-        console.log(this);
-        window.requestAnimationFrame(this.loop);
-    }
+    var character = new Character();
 
-    Game.prototype.createListeners = function(first_argument) {
-    	// body...
-    };
-
-    Game.prototype.removeListeners = function(first_argument) {
-    	// body...
-    };
-    return Game;
-    
+    return character;
 });

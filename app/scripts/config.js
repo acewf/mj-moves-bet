@@ -23,10 +23,9 @@ var require = {
         },
         game: {
             deps: [
-                'jquery',
-                'character'
+                'jquery'
             ],
-            exports: 'board'
+            exports: 'game'
         },
         moonhero: {
             deps: [
