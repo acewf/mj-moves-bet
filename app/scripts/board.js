@@ -1,7 +1,5 @@
 define(['board'], function() {
     'use strict';
-    
-    console.log('--------BOARD-----',app);
     //Board Contructor
     function Board(){
     	Object.defineProperties(this, {

@@ -4,8 +4,8 @@ email: pedro.martins@pixelkiller.net
 Date: 07/2015
 */
 define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
-    console.log(keyboard,'#--#',gameid,gamecanvas,menuView)
     //Application Contructor  
+    console.log('MoonHero Contructor');
     function MoonHero(){
         Object.defineProperties(this, {
             defaultType: {
@@ -64,12 +64,7 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
         // Application UID
         this.id = this.createId();
         this.canvasContext = null;
-
         this.keyboard = new keyboard();
-
-        this.createListeners();
-
-        console.log('MoonHero Contructor');
     }
 
     //Application initializer  
@@ -78,7 +73,8 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
         console.log('Init MoonHero Application');
         console.log('ID:',this.id);
 
-        $(menuView).removeClass('hide');
+        this.createListeners();
+        this.showMenu(null);        
         this.CanvasRender(null);
     };
 
@@ -91,6 +87,9 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
     MoonHero.prototype.createListeners = function() {
         var instance = this;
         instance.keyboard.addEventListener('keydown',instance.keyboardEvent);
+        instructionsbt.addEventListener('click',function(ev){
+            instance.showInstructions(ev);
+        });
     	// body...
     };
 
@@ -103,6 +102,29 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
     MoonHero.prototype.keyboardEvent = function(ev) {
         console.log('-KEYBOARD EVENT-',ev);
     };
+
+    //Application Add Global Listeners
+    MoonHero.prototype.showMenu = function(ev,func) {
+        if (ev) {
+            goback.removeEventListener(ev.type,func);
+        };
+        $(menuView).removeClass('hide');
+        $(instructionsView).addClass('hide');
+    }
+    
+    //  KeyBoard Event Dispatch
+    MoonHero.prototype.showInstructions = function(ev) {
+        var instance = this;
+        $(menuView).addClass('hide');
+        $(instructionsView).removeClass('hide');
+        var temp = function(ev){
+            instance.showMenu(ev,temp);
+        }
+        goback.addEventListener('click',temp);
+    };
+
+
+
 
     //Application Global Render to Canvas
     MoonHero.prototype.CanvasRender = function (argument) {
