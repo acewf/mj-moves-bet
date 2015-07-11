@@ -27,3 +27,23 @@ body {
   color: #000;
   padding: 0.2em 0;
 }
+
+
+
+.wrapper{
+  text-align: center;
+}
+
+.about-me{
+  display: block;
+  text-align: center;
+}
+#instructions{
+  display: inline-block;
+}
+#gamecanvas{
+  width: 600px;
+  height: 400px;
+  background-color: #ccc;
+  display: inline-block;
+}

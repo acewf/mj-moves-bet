@@ -7,14 +7,24 @@ var require = {
     paths: {
         main: '../scripts/main',
         app: '../scripts/app',
-        board: '../scripts/board',
         moonhero: '../scripts/moon-hero',
+        game: '../scripts/game-engine',
+        board: '../scripts/board',
+        keyboard: '../scripts/keyboard',
+        character: '../scripts/character',
         jquery: 'jquery/dist/jquery',
     },
     shim: {
         board: {
             deps: [
                 'jquery'
+            ],
+            exports: 'board'
+        },
+        game: {
+            deps: [
+                'jquery',
+                'character'
             ],
             exports: 'board'
         },
