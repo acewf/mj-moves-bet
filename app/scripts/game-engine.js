@@ -62,10 +62,13 @@ define(['game','board','character'], function(game,Board,Character) {
         this.id = this.createId();
         this.renderByFrame = false;
         this.addEventListener('keyboardEvent',function(ev){
-            console.log(ev);
             if (ev.keyCode===27) {
                 instance.renderByFrame = false;
+                mj.destroy();
             };
+            if (ev.keyCode===81 || ev.keyCode===80 || ev.keyCode===79 || ev.keyCode===87) {
+                mj.keyboardEvent(ev.keyCode);
+            }
         });
     }
     
@@ -82,8 +85,6 @@ define(['game','board','character'], function(game,Board,Character) {
 
         this.renderByFrame = true;
         this.loop(window);
-
-
     };
 
 

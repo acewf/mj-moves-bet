@@ -4,12 +4,13 @@ email: pedro.martins@pixelkiller.net
 Date: 07/2015
 */
 define(['character'], function() {
-    var mjFrameAnim = '{"andarcostas":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":27,"w":25,"h":53} }, {"filename": "backimage", "frame": {"x":161,"y":26,"w":25,"h":54} }, {"filename": "backimage", "frame": {"x":192,"y":24,"w":23,"h":56} }, {"filename": "backimage", "frame": {"x":223,"y":24,"w":23,"h":56} }, {"filename": "backimage", "frame": {"x":254,"y":26,"w":23,"h":54} }, {"filename": "backimage", "frame": {"x":285,"y":24,"w":23,"h":56} }, {"filename": "backimage", "frame": {"x":316,"y":25,"w":23,"h":55} } ] }, "touchingknee":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":402,"w":25,"h":54} }, {"filename": "backimage", "frame": {"x":153,"y":402,"w":37,"h":54} }, {"filename": "backimage", "frame": {"x":191,"y":402,"w":37,"h":54} }, {"filename": "backimage", "frame": {"x":236,"y":401,"w":36,"h":55} }, {"filename": "backimage", "frame": {"x":280,"y":402,"w":35,"h":54} }, {"filename": "backimage", "frame": {"x":323,"y":402,"w":39,"h":54} }, {"filename": "backimage", "frame": {"x":370,"y":402,"w":30,"h":54} }, {"filename": "backimage", "frame": {"x":408,"y":403,"w":25,"h":53} }, {"filename": "backimage", "frame": {"x":440,"y":402,"w":26,"h":54} }, {"filename": "backimage", "frame": {"x":474,"y":402,"w":25,"h":54} } ] } }';
+    var mjFrameAnim = '{"default":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":593,"w":28,"h":55} }, {"filename": "backimage", "frame": {"x":156,"y":592,"w":27,"h":56} }, {"filename": "backimage", "frame": {"x":191,"y":592,"w":27,"h":56} }, {"filename": "backimage", "frame": {"x":226,"y":593,"w":28,"h":55} }, {"filename": "backimage", "frame": {"x":261,"y":593,"w":30,"h":55} }, {"filename": "backimage", "frame": {"x":298,"y":593,"w":27,"h":54} } ] }, "openjacket":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":656,"w":26,"h":56} }, {"filename": "backimage", "frame": {"x":154,"y":656,"w":25,"h":56} }, {"filename": "backimage", "frame": {"x":187,"y":658,"w":25,"h":54} }, {"filename": "backimage", "frame": {"x":219,"y":658,"w":29,"h":54} }, {"filename": "backimage", "frame": {"x":256,"y":658,"w":28,"h":54} }, {"filename": "backimage", "frame": {"x":292,"y":658,"w":29,"h":54} } ] }, "spin":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":528,"w":25,"h":56} }, {"filename": "backimage", "frame": {"x":153,"y":529,"w":29,"h":55} }, {"filename": "backimage", "frame": {"x":190,"y":529,"w":34,"h":55} }, {"filename": "backimage", "frame": {"x":232,"y":529,"w":32,"h":55} }, {"filename": "backimage", "frame": {"x":272,"y":529,"w":27,"h":55} }, {"filename": "backimage", "frame": {"x":307,"y":528,"w":25,"h":55} }, {"filename": "backimage", "frame": {"x":340,"y":529,"w":29,"h":54} }, {"filename": "backimage", "frame": {"x":373,"y":529,"w":25,"h":55} }, {"filename": "backimage", "frame": {"x":406,"y":529,"w":26,"h":55} }, {"filename": "backimage", "frame": {"x":440,"y":528,"w":25,"h":56} }, {"filename": "backimage", "frame": {"x":473,"y":519,"w":26,"h":65} } ] }, "andarcostas":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":27,"w":25,"h":53} }, {"filename": "backimage", "frame": {"x":161,"y":26,"w":25,"h":54} }, {"filename": "backimage", "frame": {"x":192,"y":24,"w":23,"h":56} }, {"filename": "backimage", "frame": {"x":223,"y":24,"w":23,"h":56} }, {"filename": "backimage", "frame": {"x":254,"y":26,"w":23,"h":54} }, {"filename": "backimage", "frame": {"x":285,"y":24,"w":23,"h":56} }, {"filename": "backimage", "frame": {"x":316,"y":25,"w":23,"h":55} } ] }, "touchingknee":{"frames": [{"filename": "backimage", "frame": {"x":120,"y":402,"w":25,"h":54} }, {"filename": "backimage", "frame": {"x":153,"y":402,"w":37,"h":54} }, {"filename": "backimage", "frame": {"x":191,"y":402,"w":37,"h":54} }, {"filename": "backimage", "frame": {"x":236,"y":401,"w":36,"h":55} }, {"filename": "backimage", "frame": {"x":280,"y":402,"w":35,"h":54} }, {"filename": "backimage", "frame": {"x":323,"y":402,"w":39,"h":54} }, {"filename": "backimage", "frame": {"x":370,"y":402,"w":30,"h":54} }, {"filename": "backimage", "frame": {"x":408,"y":403,"w":25,"h":53} }, {"filename": "backimage", "frame": {"x":440,"y":402,"w":26,"h":54} }, {"filename": "backimage", "frame": {"x":474,"y":402,"w":25,"h":54} } ] } }';
      var mjAnimInfo = null;
     //Game Contructor
     var actualFrame = 0;
     var fps = 0;
     var danceMove = null;
+    var canChangeMove = true;
     function Character(){
         Object.defineProperties(this, {
             // rewritable at the moment of load, it holds the default type chosen for fallback purposes in the future
@@ -41,9 +42,10 @@ define(['character'], function() {
         this.id = this.createId();
 
         mjAnimInfo = JSON.parse(mjFrameAnim);
-        danceMove = mjAnimInfo.andarcostas;
+        danceMove = mjAnimInfo.default;
         //console.log(mjAnimInfo)
 
+        beatit.play();
          
     }
 
@@ -53,17 +55,16 @@ define(['character'], function() {
 
     Character.prototype.destroy = function(first_argument) {
     	console.log('Destroy Character id:',this.id);
+        beatit.pause();
     };
 
     Character.prototype.update = function(canvasContext) {
         canvasContext.save(); 
-        canvasContext.font='40px Arial';
-        canvasContext.fillStyle='#FF0000';
-        var txt='defaultText';
-        //canvasContext.fillText(txt,300,200);
-        
         var info = danceMove.frames[actualFrame];
-        canvasContext.drawImage(mjallsprite, info.frame.x, info.frame.y,info.frame.w,info.frame.h,300,200,info.frame.w,info.frame.h) ;
+        if (info!=null && info.frame) {
+            canvasContext.drawImage(mjallsprite, info.frame.x, info.frame.y,info.frame.w,info.frame.h,Math.round(300-(info.frame.w/2)),Math.round(380-info.frame.h),info.frame.w,info.frame.h) ;
+        };
+        
 
         //canvasContext.translate( 500 * -0.5, canvasContext.measureText(txt).height * -0.5 );
         canvasContext.restore();
@@ -72,12 +73,29 @@ define(['character'], function() {
             actualFrame++;
             if (actualFrame>=danceMove.frames.length) {
                 actualFrame = 0;
+                canChangeMove = true;
+                danceMove = mjAnimInfo.default;
+                var random = Math.floor((Math.random() * 100) + 1);
+                if (random>65) {
+                    danceMove = mjAnimInfo.openjacket;
+                };
             };
         };        
         fps++;
     }
 
-
+    Character.prototype.keyboardEvent = function(code) {
+        if (code==81) {
+            danceMove = mjAnimInfo.touchingknee;
+        };
+        if (code==80) {
+            danceMove = mjAnimInfo.andarcostas;
+        };
+        if (code==79) {
+            danceMove = mjAnimInfo.spin;
+        };
+        canChangeMove = false;
+    }
 
     //// CLASS DEFAULT
     Character.prototype.addEventListener = function(a,b){

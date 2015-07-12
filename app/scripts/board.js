@@ -49,9 +49,11 @@ define(['board'], function() {
     Board.prototype.update = function(canvasContext) {
     	increment++;
     	canvasContext.save(); 
+        /*
         canvasContext.font=fontsize;
         canvasContext.fillStyle=textColor;
         canvasContext.fillText(defaultText+increment,10,60,200);
+        */
         canvasContext.restore();
     };
 

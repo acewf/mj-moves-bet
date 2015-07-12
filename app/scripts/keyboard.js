@@ -9,6 +9,8 @@ define(['keyboard'], function() {
     listOfKeys['38'] = true;
     listOfKeys['39'] = true;
     listOfKeys['40'] = true;
+    listOfKeys['79'] = true;
+    listOfKeys['80'] = true;
     listOfKeys['81'] = true;
     listOfKeys['87'] = true;
     listOfKeys['32'] = true;
@@ -50,7 +52,6 @@ define(['keyboard'], function() {
     }
 
     KeyBoard.prototype.parseEvent = function(ev,instance){
-        console.log(ev.keyCode)
         if (listOfKeys[ev.keyCode]) {
             this.dispatchEvent('keydown',ev);
         };
@@ -89,7 +90,6 @@ define(['keyboard'], function() {
         event.keyCode = data.keyCode;
         event.shiftKey =  data.shiftKey;
         event.ctrlKey =  data.ctrlKey;
-        console.log(this);
         if(this.dispatchEvent){
             var callFunctionOn = this[event.eventName];
             try{
