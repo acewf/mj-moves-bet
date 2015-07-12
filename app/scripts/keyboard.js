@@ -12,6 +12,7 @@ define(['keyboard'], function() {
     listOfKeys['81'] = true;
     listOfKeys['87'] = true;
     listOfKeys['32'] = true;
+    listOfKeys['27'] = true;
     var htmlEvents = {// list of real events
         //<body> and <frameset> Events
         onload:1,
@@ -46,10 +47,10 @@ define(['keyboard'], function() {
         window.addEventListener('keydown',function(ev){
             instance.parseEvent(ev,instance)
         });
-
     }
 
     KeyBoard.prototype.parseEvent = function(ev,instance){
+        console.log(ev.keyCode)
         if (listOfKeys[ev.keyCode]) {
             this.dispatchEvent('keydown',ev);
         };

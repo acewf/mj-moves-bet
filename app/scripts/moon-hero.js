@@ -3,9 +3,10 @@ Author: Pedro Martins
 email: pedro.martins@pixelkiller.net
 Date: 07/2015
 */
-define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
+define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
+    var game = null;
     //Application Contructor  
-    console.log('MoonHero Contructor');
+    console.log('MoonHero Contructor',game,GameClass);
     function MoonHero(){
         Object.defineProperties(this, {
             defaultType: {
@@ -90,7 +91,9 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
         instructionsbt.addEventListener('click',function(ev){
             instance.showInstructions(ev);
         });
-    	// body...
+        playbt.addEventListener('click',function(ev){
+            instance.playGame(ev);
+        });
     };
 
     //Application Remove Global Listeners
@@ -100,7 +103,9 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
 
     //  KeyBoard Event Dispatch
     MoonHero.prototype.keyboardEvent = function(ev) {
-        console.log('-KEYBOARD EVENT-',ev);
+        if (game) {
+            game.dispatchEvent('keyboardEvent',ev);
+        };
     };
 
     //Application Add Global Listeners
@@ -111,7 +116,7 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
         $(menuView).removeClass('hide');
         $(instructionsView).addClass('hide');
     }
-    
+
     //  KeyBoard Event Dispatch
     MoonHero.prototype.showInstructions = function(ev) {
         var instance = this;
@@ -123,6 +128,19 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
         goback.addEventListener('click',temp);
     };
 
+    //  KeyBoard Event Dispatch
+    MoonHero.prototype.playGame = function(ev) {
+        var instance = this;
+        $(menuView).addClass('hide');
+        $(instructionsView).addClass('hide');
+        game = new GameClass();
+        console.log('addEventListener:::render');
+        game.addEventListener('render',function(ev){
+            instance.CanvasDraw();
+        })
+        game.init(instance.canvasContext);
+    };
+
 
 
 
@@ -130,15 +148,12 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
     MoonHero.prototype.CanvasRender = function (argument) {
         var instance = this;
         //instance.canvasContext.clearRect(0, 0, instance.W, instance.H);
-
         console.log(instance);
         var browser=instance.bowserInfo().get_browser();
         var browser_version=instance.bowserInfo().get_browser_version();
         if (!((browser=='Firefox') ||  (browser=='MSIE') ||  (browser=='Safari'))) {
             W = window.innerWidth, H = window.innerHeight;
             instance.canvasContext  = gamecanvas.getContext("2d");
-            console.log(instance.canvasContext );
-            //Make the canvas occupy the full page
             gamecanvas.width = W;
             gamecanvas.height = H;
             /*
@@ -150,11 +165,9 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,game) {
     }
     MoonHero.prototype.CanvasDraw = function (argument) {
         var instance = this;
-        console.log('---');
-        console.log(instance.canvasContext)
-
-        instance.canvasContext.fillStyle = "rgba(0, 0, 0, 1)";
-        instance.canvasContext.fillRect(0, 0, W, H);
+        //instance.canvasContext.clearRect( 0, 0, W, H );
+        //instance.canvasContext.fillStyle = "rgba(0, 0, 0, 1)";
+        //instance.canvasContext.fillRect(0, 0, W, H);
     }
 
 
