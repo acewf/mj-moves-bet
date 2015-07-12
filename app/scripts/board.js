@@ -5,6 +5,14 @@ define(['board'], function() {
     var textColor = '#FF0000';
     var fontsize = '24px Arial';
     var defaultText = 'Place Your Bet!';
+    var timebarWidth = 600;
+    var timebarStart = 0;
+    var actualCredits = 0;
+    var steps = [];
+    var minSteps = 5;
+	var midSteps = 10;
+	var maxSteps = 20;
+    var multiplier = {fail:-1,sucess:1,great:3};
     //Board Contructor
     function Board(){
     	Object.defineProperties(this, {
@@ -37,24 +45,67 @@ define(['board'], function() {
         this.id = this.createId();
     }
 
-    Board.prototype.init = function(first_argument) {
+
+    Board.prototype.init = function(value) {
+    	var instance = this;
     	console.log('init board');
-    	console.log('ID:',this.id)
+    	console.log('ID:',this.id);
+    	instance.show(value);
+
+    	goplay.addEventListener('click', function(ev){
+    		if (mybet.value<=actualCredits) {
+    			actualCredits -= mybet.value;
+    		} else {
+    			return false;
+    		}
+    		$(credits).text(actualCredits);
+    		instance.dispatchEvent('updateCredits',{credits:actualCredits});
+    		instance.stepGenerator(mybet.value);
+    	});
+    	
+    	backMenu.addEventListener('click', function(ev){
+    		instance.dispatchEvent('goHome',ev);
+    	});
     };
+
+    Board.prototype.show = function(value){
+    	$(betView).removeClass('hide');
+    	$(credits).text(value);
+    	actualCredits = value;
+    }
 
     Board.prototype.destroy = function(first_argument) {
-    	// body...
+    	console.log('---DESTROY---');
+    	//backMenu.removeEventListener('click', backMenu['click']);
     };
 
-    Board.prototype.update = function(canvasContext) {
+    Board.prototype.update = function(canvasContext,data) {
     	increment++;
-    	canvasContext.save(); 
+    	canvasContext.save();
+    	this.createViewTime(canvasContext,data);
         /*
         canvasContext.font=fontsize;
         canvasContext.fillStyle=textColor;
         canvasContext.fillText(defaultText+increment,10,60,200);
         */
         canvasContext.restore();
+    };
+
+    Board.prototype.stepGenerator = function(betvalue) {
+    	steps = [];
+    	var keys = [79,80,81,87];
+    	for (var i = maxSteps - 1; i >= 0; i--) {
+    		var pos = Math.floor((Math.random() * keys.length) + 1);
+    		steps.push(keys[pos]);
+    	};
+    };
+
+    Board.prototype.stepManager = function(first_argument) {
+    	// body...
+    };
+
+    Board.prototype.stepExecute = function(first_argument) {
+    	// body...
     };
 
 
@@ -65,16 +116,14 @@ define(['board'], function() {
     	// body...
     };
 
-    Board.prototype.createView = function(first_argument) {
-    	return {
-    		instructions:function(){
-    			
-    		},
-    		gameplay:function(){
 
-    		}
-    	};
-    	// body...
+
+    Board.prototype.createViewTime = function(canvasContext,data) {
+
+    	canvasContext.rect(0,0,timebarWidth,10);
+    	canvasContext.fillStyle="red";
+		canvasContext.fill();
+		canvasContext.stroke();
     };
 
     Board.prototype.removeView = function(first_argument) {
@@ -82,6 +131,9 @@ define(['board'], function() {
     };
 
 
+
+
+    //*****************************//
     Board.prototype.addEventListener = function(a,b){
       'use strict';
         if(this.addEventListener){
@@ -112,10 +164,16 @@ define(['board'], function() {
             //console.log('c');
         }
         event.eventName = eventName;
-        event.keyCode = data.keyCode;
-        event.shiftKey =  data.shiftKey;
-        event.ctrlKey =  data.ctrlKey;
-        console.log(this);
+        if (data) {
+        	if(data.credits){
+        		event.credits = data.credits;
+        	} else if (event.keyCode) {
+        		event.keyCode = data.keyCode;
+		        event.shiftKey =  data.shiftKey;
+		        event.ctrlKey =  data.ctrlKey;
+        	};	       
+	    }
+
         if(this.dispatchEvent){
             var callFunctionOn = this[event.eventName];
             try{

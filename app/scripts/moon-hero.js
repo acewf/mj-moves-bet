@@ -115,6 +115,7 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
         };
         $(menuView).removeClass('hide');
         $(instructionsView).addClass('hide');
+        $(betView).addClass('hide');
     }
 
     //  KeyBoard Event Dispatch
@@ -133,16 +134,26 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
         var instance = this;
         $(menuView).addClass('hide');
         $(instructionsView).addClass('hide');
-        game = new GameClass();
-        console.log('addEventListener:::render');
-        game.addEventListener('render',function(ev){
-            instance.CanvasDraw();
-        })
-        game.init(instance.canvasContext);
+        if (game==null) {
+            game = new GameClass();
+            game.addEventListener('render',function(ev){
+                instance.CanvasDraw();
+            });
+            game.addEventListener('showMenu',function(ev){
+                console.log('-showMenu-');
+                /*
+                if (game!=null) {
+                    game.destroy();
+                    game = null;
+                };
+                */
+                instance.showMenu(ev);
+            })
+            game.init(instance.canvasContext);
+        } else {
+            game.show();
+        }
     };
-
-
-
 
     //Application Global Render to Canvas
     MoonHero.prototype.CanvasRender = function (argument) {
@@ -157,11 +168,6 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
             instance.canvasContext  = gamecanvas.getContext("2d");
             gamecanvas.width = W;
             gamecanvas.height = H;
-            /*
-            intVeral = setInterval(function(){
-                instance.CanvasDraw(this);
-            }, 2000);
-            */
         }
     }
     MoonHero.prototype.CanvasDraw = function (argument) {

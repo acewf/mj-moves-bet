@@ -65,7 +65,6 @@ define(['character'], function() {
             canvasContext.drawImage(mjallsprite, info.frame.x, info.frame.y,info.frame.w,info.frame.h,Math.round(300-(info.frame.w/2)),Math.round(380-info.frame.h),info.frame.w,info.frame.h) ;
         };
         
-
         //canvasContext.translate( 500 * -0.5, canvasContext.measureText(txt).height * -0.5 );
         canvasContext.restore();
         if (fps===8) {
@@ -138,7 +137,6 @@ define(['character'], function() {
         event.keyCode = data.keyCode;
         event.shiftKey =  data.shiftKey;
         event.ctrlKey =  data.ctrlKey;
-        console.log(this);
         if(this.dispatchEvent){
             var callFunctionOn = this[event.eventName];
             try{

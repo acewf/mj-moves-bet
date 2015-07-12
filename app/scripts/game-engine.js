@@ -73,27 +73,52 @@ define(['game','board','character'], function(game,Board,Character) {
     }
     
     Game.prototype.init = function(ctx) {
-    	// body...
-        canvasContext = ctx;
+        var instance = this;
+    	canvasContext = ctx;
         console.log('Init Game');
         console.log('ID:',this.id);
 
-        boardresults = new Board();
-        mj = new Character();
-        itemsToRender.push(boardresults);
-        itemsToRender.push(mj);
+        if (boardresults===null) {
+            boardresults = new Board();
+            boardresults.addEventListener('goHome',function(ev){
+                instance.goBackHome(ev);
+            });
+            boardresults.addEventListener('updateCredits',function(ev){
+                instance.updateCredits(ev);
+            });
+            boardresults.init(credits);
+            itemsToRender.push(boardresults);
+        };
+    };
+    Game.prototype.show = function() {
+        boardresults.show(credits);
+    }
 
+    Game.prototype.destroy = function(first_argument) {
+    	var instance = this;
+        this.renderByFrame = false;
+        //boardresults.destroy();
+        //boardresults = null;
+    };
+    Game.prototype.startGame = function(first_argument) {
         this.renderByFrame = true;
         this.loop(window);
     };
-
-
-
-    Game.prototype.destroy = function(first_argument) {
-    	// body...
-        this.renderByFrame = false;
+    Game.prototype.goBackHome = function(ev) {
+        var instance = this;
+        instance.dispatchEvent('showMenu');  
     };
 
+    Game.prototype.makeBetView = function(ctx) {
+        
+    }
+    Game.prototype.updateCredits = function(value) {
+        credits = value.credits;
+    }
+    Game.prototype.addCharaceterView = function(ctx) {
+        mj = new Character();
+        itemsToRender.push(mj);
+    }
 
     Game.prototype.loop = function(ev){
         var instance = this;
@@ -102,7 +127,7 @@ define(['game','board','character'], function(game,Board,Character) {
 
         canvasContext.clearRect( 0, 0, W, H );
         for (var i = itemsToRender.length - 1; i >= 0; i--) {
-            itemsToRender[i].update(canvasContext);
+            itemsToRender[i].update(canvasContext,{now:now,dt:dt});
         };
         this.dispatchEvent('render');
         lastTime = now;
