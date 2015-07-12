@@ -3,12 +3,31 @@ Author: Pedro Martins
 email: pedro.martins@pixelkiller.net
 Date: 07/2015
 */
-define(['game','board'], function(game,Board) {
+var fps = {
+    startTime : 0,
+    frameNumber : 0,
+    getFPS : function(){
+        this.frameNumber++;
+        var d = new Date().getTime(),
+            currentTime = ( d - this.startTime ) / 1000,
+            result = Math.floor( ( this.frameNumber / currentTime ) );
+
+        if( currentTime > 1 ){
+            this.startTime = new Date().getTime();
+            this.frameNumber = 0;
+        }
+        return result;
+
+    }   
+};
+define(['game','board','character'], function(game,Board,Character) {
     var boardresults = null;
     var credits = 1000;
     var canvasContext = null;
     
     var itemsToRender = [];
+    var mj = null;
+    var lastTime;
 
     //Game Contructor
     function Game(){
@@ -54,14 +73,16 @@ define(['game','board'], function(game,Board) {
     	// body...
         canvasContext = ctx;
         console.log('Init Game');
-        console.log('ID:',this.id,ctx)
-        //this.loop();
-
-        //itemsToRender.push();
+        console.log('ID:',this.id);
 
         boardresults = new Board();
+        mj = new Character();
+        itemsToRender.push(boardresults);
+        itemsToRender.push(mj);
+
         this.renderByFrame = true;
         this.loop(window);
+
 
     };
 
@@ -75,9 +96,15 @@ define(['game','board'], function(game,Board) {
 
     Game.prototype.loop = function(ev){
         var instance = this;
+        var now = Date.now();
+        var dt = (now - lastTime) / 1000.0;
+
         canvasContext.clearRect( 0, 0, W, H );
-        boardresults.update(canvasContext);
+        for (var i = itemsToRender.length - 1; i >= 0; i--) {
+            itemsToRender[i].update(canvasContext);
+        };
         this.dispatchEvent('render');
+        lastTime = now;
         window.requestAnimationFrame(function(){
             if(instance.renderByFrame){
                 instance.loop(window);
@@ -85,6 +112,7 @@ define(['game','board'], function(game,Board) {
         });
     }
 
+    ////////***********************////////
 
     Game.prototype.addEventListener = function(a,b){
       'use strict';

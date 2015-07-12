@@ -95,6 +95,10 @@ body {
   display: inline-block;
 }
 
+#contentsources{
+  text-align: left;
+}
+
 .hide{
   opacity: 0;
 }

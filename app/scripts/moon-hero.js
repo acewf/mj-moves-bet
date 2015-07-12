@@ -152,7 +152,8 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
         var browser=instance.bowserInfo().get_browser();
         var browser_version=instance.bowserInfo().get_browser_version();
         if (!((browser=='Firefox') ||  (browser=='MSIE') ||  (browser=='Safari'))) {
-            W = window.innerWidth, H = window.innerHeight;
+            console.log(gamecanvas.offsetWidth);
+            W = gamecanvas.offsetWidth, H = gamecanvas.offsetHeight;
             instance.canvasContext  = gamecanvas.getContext("2d");
             gamecanvas.width = W;
             gamecanvas.height = H;

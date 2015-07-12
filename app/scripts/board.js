@@ -3,7 +3,7 @@ define(['board'], function() {
 
     var increment = 0;
     var textColor = '#FF0000';
-    var fontsize = '40px Arial';
+    var fontsize = '24px Arial';
     var defaultText = 'Place Your Bet!';
     //Board Contructor
     function Board(){
