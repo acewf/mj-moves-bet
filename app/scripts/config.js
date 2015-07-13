@@ -3,7 +3,7 @@ Author: Pedro Martins
 email: pedro.martins@pixelkiller.net
 */
 var require = {
-    baseUrl: '/bower_components',
+    baseUrl: 'bower_components',
     paths: {
         main: '../scripts/main',
         app: '../scripts/app',

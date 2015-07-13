@@ -49,7 +49,6 @@ define(['character'], function() {
     Character.prototype.init = function(first_argument) {
         danceMove = mjAnimInfo.default;
         actualFrame = 0;
-        console.log('Build Character id:',this.id);
         beatit.play();
     };
 

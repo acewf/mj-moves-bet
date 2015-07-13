@@ -12,11 +12,10 @@ define(['board'], function() {
     var betCredits = 0;
     var steps = [];
     var stepCode = null;
-    var multiplier = {fail:-1,sucess:1,great:3};
     var canvasCtx = null;
     var keysRef = {};
     var lastupdate = 0;
-    var colors = ['red','white','blue'];
+    var colors = ['red','black','blue'];
     var indexColor = 0;
     var gameStart = false;
     var timeToResponde = 0;
@@ -153,8 +152,7 @@ define(['board'], function() {
     	stepCode = step;
     	defaultText = keysRef[step];
     	timebarStart = lastupdate;
-    	timeToResponde = timeToResponde*.9; 
-    	console.log(timeToResponde);
+    	timeToResponde = timeToResponde*.9;
     	var timeScale = timeToResponde;
     	timebarEnd = timebarStart+timeScale;
     };
@@ -201,11 +199,11 @@ define(['board'], function() {
         var feedback = null;
         if (mySteps<10) {
         	feedback = 'You loose you bet';
-        } else if (mySteps>10 && mySteps<18) {
+        } else if (mySteps>=10 && mySteps<18) {
         	feedback = 'You win,'+betCredits*2;
         	actualCredits +=betCredits*2;
         	instance.dispatchEvent('updateCredits',{credits:actualCredits});
-        } else if (mySteps>18) {
+        } else if (mySteps>=18) {
         	feedback = 'Excellent, win '+betCredits*5;
         	actualCredits +=betCredits*5;
         	instance.dispatchEvent('updateCredits',{credits:actualCredits});
