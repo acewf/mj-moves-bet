@@ -80,6 +80,7 @@ define(['game','board','character'], function(game,Board,Character) {
     Game.prototype.init = function(ctx) {
         var instance = this;
     	canvasContext = ctx;
+        console.log('CTX:>',ctx);
         console.log('Init Game');
         console.log('ID:',this.id);
 

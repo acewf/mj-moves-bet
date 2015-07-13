@@ -91,7 +91,8 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
             instance.showInstructions(ev);
         });
         playbt.addEventListener('click',function(ev){
-            instance.playGame(ev);
+            console.log()
+            instance.playGame(ev,instance);
         });
     };
 
@@ -129,8 +130,8 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
     };
 
     //  KeyBoard Event Dispatch
-    MoonHero.prototype.playGame = function(ev) {
-        var instance = this;
+    MoonHero.prototype.playGame = function(ev,instance) {
+        //var instance = this;
         $(menuView).addClass('hide');
         $(instructionsView).addClass('hide');
         if (game==null) {
@@ -142,6 +143,7 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
                 instance.ClearDraw();
                 instance.showMenu(ev);
             })
+            console.log('playGame_:',instance)
             game.init(instance.canvasContext);
         } else {
             game.show();
@@ -155,6 +157,11 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
         var browser=instance.bowserInfo().get_browser();
         var browser_version=instance.bowserInfo().get_browser_version();
         if (!((browser=='Firefox') ||  (browser=='MSIE') ||  (browser=='Safari'))) {
+            W = gamecanvas.offsetWidth, H = gamecanvas.offsetHeight;
+            instance.canvasContext  = gamecanvas.getContext("2d");
+            gamecanvas.width = W;
+            gamecanvas.height = H;
+        } else {
             W = gamecanvas.offsetWidth, H = gamecanvas.offsetHeight;
             instance.canvasContext  = gamecanvas.getContext("2d");
             gamecanvas.width = W;
