@@ -193,7 +193,7 @@ define(['board'], function() {
 
         canvasCtx.fillText(message,140,160);
 
-        var txtAchivement = 'You did :'+mySteps;
+        var txtAchivement = 'Total Steps :'+mySteps;
         var AchivWidth = Math.round(canvasCtx.measureText(txtAchivement).width/2);
         canvasCtx.fillText(txtAchivement,300-AchivWidth,200);
         var feedback = null;
