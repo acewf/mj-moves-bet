@@ -64,10 +64,15 @@ define(['game','board','character'], function(game,Board,Character) {
         this.addEventListener('keyboardEvent',function(ev){
             if (ev.keyCode===27) {
                 instance.renderByFrame = false;
-                mj.destroy();
+                if (mj) {
+                    mj.destroy();
+                };
+                
+                instance.goBackHome(ev);
             };
             if (ev.keyCode===81 || ev.keyCode===80 || ev.keyCode===79 || ev.keyCode===87) {
                 mj.keyboardEvent(ev.keyCode);
+                boardresults.keyboardEvent(ev.keyCode);
             }
         });
     }
@@ -82,9 +87,24 @@ define(['game','board','character'], function(game,Board,Character) {
             boardresults = new Board();
             boardresults.addEventListener('goHome',function(ev){
                 instance.goBackHome(ev);
+                instance.renderByFrame = false;
+                if (mj) {
+                    mj.destroy();
+                }
             });
             boardresults.addEventListener('updateCredits',function(ev){
                 instance.updateCredits(ev);
+            });
+            boardresults.addEventListener('loose',function(ev){
+                console.log('LOOOSE');
+                instance.renderByFrame = false;
+                mj.destroy();
+            });
+            boardresults.addEventListener('characeterView',function(ev){
+                if (mj!=null) {
+                    instance.startGame();
+                };
+                instance.addCharaceterView(ev);
             });
             boardresults.init(credits);
             itemsToRender.push(boardresults);
@@ -101,6 +121,7 @@ define(['game','board','character'], function(game,Board,Character) {
         //boardresults = null;
     };
     Game.prototype.startGame = function(first_argument) {
+        console.log('startGame');
         this.renderByFrame = true;
         this.loop(window);
     };
@@ -109,22 +130,25 @@ define(['game','board','character'], function(game,Board,Character) {
         instance.dispatchEvent('showMenu');  
     };
 
-    Game.prototype.makeBetView = function(ctx) {
-        
-    }
     Game.prototype.updateCredits = function(value) {
         credits = value.credits;
     }
-    Game.prototype.addCharaceterView = function(ctx) {
-        mj = new Character();
-        itemsToRender.push(mj);
+    Game.prototype.addCharaceterView = function() {
+        var instance = this;
+        if (mj===null) {
+            mj = new Character();
+            itemsToRender.push(mj);
+        };
+        mj.init();
+        
+        instance.renderByFrame = true;
+        instance.loop(window);
     }
 
     Game.prototype.loop = function(ev){
         var instance = this;
         var now = Date.now();
         var dt = (now - lastTime) / 1000.0;
-
         canvasContext.clearRect( 0, 0, W, H );
         for (var i = itemsToRender.length - 1; i >= 0; i--) {
             itemsToRender[i].update(canvasContext,{now:now,dt:dt});

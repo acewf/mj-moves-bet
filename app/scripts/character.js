@@ -44,17 +44,17 @@ define(['character'], function() {
         mjAnimInfo = JSON.parse(mjFrameAnim);
         danceMove = mjAnimInfo.default;
         //console.log(mjAnimInfo)
-
-        beatit.play();
-         
     }
 
     Character.prototype.init = function(first_argument) {
+        danceMove = mjAnimInfo.default;
+        actualFrame = 0;
         console.log('Build Character id:',this.id);
+        beatit.play();
     };
 
     Character.prototype.destroy = function(first_argument) {
-    	console.log('Destroy Character id:',this.id);
+    	//console.log('Destroy Character id:',this.id);
         beatit.pause();
     };
 
@@ -97,10 +97,10 @@ define(['character'], function() {
                 danceMove = mjAnimInfo.spin;
             };
             if (code==87) {
-                danceMove = mjAnimInfo.smalljump;
+                danceMove = mjAnimInfo.handmoves;
             }; 
         };
-        canChangeMove = false;
+        //canChangeMove = false;
     }
 
     //// CLASS DEFAULT

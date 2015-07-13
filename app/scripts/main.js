@@ -7,7 +7,6 @@ require(['app', 'jquery','moonhero'], function (app,jquery,moonhero) {
     'use strict';
     // use app here
     // app -> init config
-    console.log('MAIN JS')
     app.init();
 
     if (typeof requirejs === 'function') {

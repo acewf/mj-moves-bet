@@ -6,7 +6,6 @@ Date: 07/2015
 define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
     var game = null;
     //Application Contructor  
-    console.log('MoonHero Contructor',game,GameClass);
     function MoonHero(){
         Object.defineProperties(this, {
             defaultType: {
@@ -140,13 +139,7 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
                 instance.CanvasDraw();
             });
             game.addEventListener('showMenu',function(ev){
-                console.log('-showMenu-');
-                /*
-                if (game!=null) {
-                    game.destroy();
-                    game = null;
-                };
-                */
+                instance.ClearDraw();
                 instance.showMenu(ev);
             })
             game.init(instance.canvasContext);
@@ -159,11 +152,9 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
     MoonHero.prototype.CanvasRender = function (argument) {
         var instance = this;
         //instance.canvasContext.clearRect(0, 0, instance.W, instance.H);
-        console.log(instance);
         var browser=instance.bowserInfo().get_browser();
         var browser_version=instance.bowserInfo().get_browser_version();
         if (!((browser=='Firefox') ||  (browser=='MSIE') ||  (browser=='Safari'))) {
-            console.log(gamecanvas.offsetWidth);
             W = gamecanvas.offsetWidth, H = gamecanvas.offsetHeight;
             instance.canvasContext  = gamecanvas.getContext("2d");
             gamecanvas.width = W;
@@ -173,6 +164,12 @@ define(['moonhero','keyboard','game'], function(moonhero,keyboard,GameClass) {
     MoonHero.prototype.CanvasDraw = function (argument) {
         var instance = this;
         //instance.canvasContext.clearRect( 0, 0, W, H );
+        //instance.canvasContext.fillStyle = "rgba(0, 0, 0, 1)";
+        //instance.canvasContext.fillRect(0, 0, W, H);
+    }
+    MoonHero.prototype.ClearDraw = function (argument) {
+        var instance = this;
+        instance.canvasContext.clearRect( 0, 0, W, H );
         //instance.canvasContext.fillStyle = "rgba(0, 0, 0, 1)";
         //instance.canvasContext.fillRect(0, 0, W, H);
     }

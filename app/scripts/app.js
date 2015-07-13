@@ -14,7 +14,6 @@ define(function (require) {
         * App initialization
 	     */
         init: function init() {
-            console.log('Prepare Modules for APP');
             for (var key in components) {
                 try {
                     components[key].init();
